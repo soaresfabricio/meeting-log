@@ -5,8 +5,13 @@ import './index.css';
 import Home from './Home.js'
 import Welcome from './Welcome.js'
 import Navigation from './Navigation.js'
+import Login from './Login.js'
+import Meetings from './Meetings.js'
+import Register from './Register.js'
 
 import { Router } from '@reach/router'
+
+import firebase from './Firebase'
 
 
 class App extends Component {
@@ -14,8 +19,16 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      user: 'Ray'
+      user: null
     }
+  }
+
+  componentDidMount() {
+    const ref = firebase.database().ref('user')
+    ref.on('value', snapshot => {
+      let FBUser = snapshot.val()
+      this.setState({ user: FBUser })
+    })
   }
 
   render() {
@@ -26,6 +39,11 @@ class App extends Component {
 
         <Router>
           <Home path="/" user={this.state.user} />
+          <Login path="/login" />
+          <Meetings path="/meetings" />
+          <Register path="/register" />
+
+
         </Router>
 
 
