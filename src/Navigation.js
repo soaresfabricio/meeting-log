@@ -1,59 +1,55 @@
-import React, { Component } from 'react'
-import { FaUsers } from 'react-icons/fa'
+import React, { Component } from "react";
+import { FaUsers } from "react-icons/fa";
 
-import { Link } from '@reach/router'
-
+import { Link } from "@reach/router";
 
 class Navigation extends Component {
+  constructor() {
+    super();
+  }
 
+  render() {
+    const { user, logOutUser } = this.props;
 
-    constructor() {
-        super()
-    }
+    return (
+      <nav className="site-nav family-sans navbar navbar-expand bg-primary navbar-dark higher">
+        <div className="container-fluid">
+          <Link to="/" className="navbar-brand">
+            <FaUsers className="mr-3" />
+            Meeting Log
+          </Link>
+          <div className="navbar-nav ml-auto">
+            {user && (
+              <Link className="nav-item nav-link" to="/meetings">
+                meetings
+              </Link>
+            )}
 
-    render() {
-        const { user } = this.props
+            {!user && (
+              <Link className="nav-item nav-link" to="/login">
+                log in
+              </Link>
+            )}
+            {!user && (
+              <Link className="nav-item nav-link" to="/register">
+                register
+              </Link>
+            )}
 
-        return (
-            <nav className="site-nav family-sans navbar navbar-expand bg-primary navbar-dark higher">
-                <div className="container-fluid">
-                    <Link to="/" className="navbar-brand">
-                        <FaUsers className="mr-3" />Meeting Log
-    </Link>
-                    <div className="navbar-nav ml-auto">
-                        {user &&
-
-                            <Link className="nav-item nav-link" to="/meetings">
-                                meetings
-        </Link>
-                        }
-
-                        {!user &&
-                            <Link className="nav-item nav-link" to="/login">
-                                log in
-        </Link>
-
-                        }
-                        {!user &&
-                            <Link className="nav-item nav-link" to="/register">
-                                register
-        </Link>
-                        }
-
-                        {user &&
-
-                            <Link className="nav-item nav-link" to="/login">
-                                log out
-        </Link>
-                        }
-
-                    </div>
-                </div>
-            </nav>
-
-        )
-    }
-
+            {user && (
+              <Link
+                className="nav-item nav-link"
+                to="/login"
+                onClick={e => logOutUser(e)}
+              >
+                log out
+              </Link>
+            )}
+          </div>
+        </div>
+      </nav>
+    );
+  }
 }
 
 export default Navigation;

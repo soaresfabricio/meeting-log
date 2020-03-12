@@ -4,8 +4,8 @@ import FormError from "./FormError";
 import firebase from "./Firebase";
 
 class Register extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       displayName: "",
       email: "",
@@ -30,19 +30,23 @@ class Register extends Component {
     });
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     var registrationInfo = {
       displayName: this.state.displayName,
       email: this.state.email,
       password: this.state.passOne
     };
     e.preventDefault();
-    firebase
+    await firebase
       .auth()
       .createUserWithEmailAndPassword(
         registrationInfo.email,
         registrationInfo.password
       )
+      .then(() => {
+        // Passing the information to the main component
+        this.props.registerUser(registrationInfo.displayName);
+      })
       .catch(error => {
         if (error.message !== null) {
           this.setState({ errorMessage: error.message });
